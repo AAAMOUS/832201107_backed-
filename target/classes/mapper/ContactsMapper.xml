@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.contacts.mapper.ContactsMapper">
+
+    <resultMap id="contactsResultMap" type="com.example.contacts.pojo.Contacts">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="phone" column="phone"/>
+        <result property="age" column="age"/>
+    </resultMap>
+
+    <select id="getContacts" resultType="com.example.contacts.pojo.Contacts">
+        SELECT * FROM contacts
+    </select>
+
+    <select id="getContactsById" parameterType="long" resultMap="contactsResultMap">
+        SELECT * FROM contacts WHERE id = #{id}
+    </select>
+
+    <insert id="createContacts" parameterType="com.example.contacts.pojo.Contacts">
+        INSERT INTO contacts (name, phone, age)
+        VALUES (#{name}, #{phone}, #{age})
+    </insert>
+
+    <update id="updateContacts" parameterType="com.example.contacts.pojo.Contacts">
+        UPDATE contacts
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="age != null">age = #{age},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteContacts" parameterType="long">
+        DELETE FROM contacts WHERE id = #{id}
+    </delete>
+
+</mapper>
